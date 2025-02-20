@@ -1,15 +1,26 @@
 use std::io::Result;
 
+pub struct Token {
+    value: String,
+    row: usize
+}
+
+impl Token {
+    fn new(value: String, row: usize) -> Self {
+        Self { value, row }
+    }    
+}
+
 pub struct Lexer;
 
 impl Lexer {
     // Lexes an entire file 
-    pub fn lex_file(file: &str) -> Result<Vec<String>> {
-        let mut tokens: Vec<String> = Vec::new();
+    pub fn lex_file(file: &str) -> Result<Vec<Token>> {
+        let mut tokens: Vec<Token> = Vec::new();
         let program = std::fs::read_to_string(file)?;
         let lines: Vec<&str> = program.lines().collect();
 
-        for (row, line) in lines.iter().enumerate() {
+        for (row, &line) in lines.iter().enumerate() {
             let mut lexed = Self::lex_line(line, row);
             tokens.append(&mut lexed);
         }
@@ -18,9 +29,9 @@ impl Lexer {
     }
     
     // Turns a line into a vector of strings or tokens
-    pub fn lex_line(line: &str, row: usize) -> Vec<String> {
+    fn lex_line(line: &str, row: usize) -> Vec<Token> {
         let split = line.split("//").next().unwrap_or(line);
-        let mut tokens: Vec<String> = Vec::new();
+        let mut tokens: Vec<Token> = Vec::new();
         let chars = split.chars().collect::<Vec<char>>();
         let mut iter = chars.iter().peekable();
 
@@ -35,7 +46,7 @@ impl Lexer {
                             keyword.push(ch);
                             iter.next();
                         } else {
-                            tokens.push(keyword);
+                            tokens.push(Token::new(keyword, row));
                             break;
                         }
                     }
@@ -48,7 +59,7 @@ impl Lexer {
                             number.push(digit);
                             iter.next();
                         } else {
-                            tokens.push(number.to_owned());
+                            tokens.push(Token::new(number, row));
                             break;
                         }
                     }
