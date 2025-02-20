@@ -10,7 +10,7 @@ impl Lexer {
         let lines: Vec<&str> = program.lines().collect();
 
         for (row, line) in lines.iter().enumerate() {
-            let mut lexed = Self::lex_line(line, row+1);
+            let mut lexed = Self::lex_line(line, row);
             tokens.append(&mut lexed);
         }
 
