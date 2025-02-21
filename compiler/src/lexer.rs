@@ -21,11 +21,13 @@ impl Lexer {
     pub fn new() -> Self {
         Lexer
     }
+    
     fn lex_line(&self, file: &str, line: &str, row: usize) -> Result<Vec<Token>> {
         let split = line.split("//").next().unwrap_or(line);
         let chars = split.chars().collect::<Vec<char>>();
         let mut tokens = Vec::<Token>::new();
-        let mut iter: std::iter::Peekable<std::iter::Enumerate<std::slice::Iter<'_, char>>> = chars.iter().enumerate().peekable();
+        let mut iter: std::iter::Peekable<std::iter::Enumerate<std::slice::Iter<'_, char>>> =
+            chars.iter().enumerate().peekable();
 
         while let Some(&(_, &c)) = iter.peek() {
             match c {
