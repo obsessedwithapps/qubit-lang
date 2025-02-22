@@ -21,7 +21,7 @@ impl Lexer {
     pub fn new() -> Self {
         Lexer
     }
-    
+
     fn lex_line(&self, file: &str, line: &str, row: usize) -> Result<Vec<Token>> {
         let split = line.split("//").next().unwrap_or(line);
         let chars = split.chars().collect::<Vec<char>>();
