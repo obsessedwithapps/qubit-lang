@@ -31,7 +31,7 @@ impl Lexer {
 
         while let Some(&(_, &c)) = iter.peek() {
             match c {
-                '+' | '*' | '/' | '%' | '.' | '&' | '|' | '$' | '@' | '-' | '=' | '(' | ')' => {
+                '+' | '*' | '/' | '%' | '.' | '&' | '|' | '$' | '@' | '-' | '=' | '(' | ')' | '{' | '}' => {
                     let value = c.to_string();
 
                     tokens.push(Token {
@@ -69,7 +69,7 @@ impl Lexer {
                             break;
                         } else if !next.is_ascii() {
                             return Err(anyhow!(
-                                "\x1b[31m[ERROR] {file} in line {row}: Non-ascii character encountered\x1b[0m"
+                                "[ERROR] {file} in line {row}: Non-ascii character encountered"
                             ));
                         } else {
                             value.push(next);
@@ -113,7 +113,7 @@ impl Lexer {
                 }
                 _ => {
                     return Err(anyhow!(
-                        "\x1b[31m[ERROR] {file} line {row}: Invalid token {c:?}\n[BADCODE] {line}\x1b[0m",
+                        "{file} line {row}: Invalid token {c:?}\n[BADCODE] {line}",
                         row = row + 1
                     ));
                 }
