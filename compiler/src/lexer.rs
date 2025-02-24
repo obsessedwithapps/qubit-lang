@@ -70,7 +70,7 @@ impl Lexer {
                             break;
                         } else if !next.is_ascii() {
                             return Err(anyhow!(
-                                "[ERROR] {file} in line {row}: Non-ascii character encountered"
+                                "{file} in line {row}: Non-ascii character encountered"
                             ));
                         } else {
                             value.push(next);
